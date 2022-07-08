@@ -4,6 +4,7 @@ module.exports = (app) => {
   const router = require("express").Router();
 
   router.route("/")
+  .post(listController.add)
   .get(listController.get);
   
   router.route("/:id")
