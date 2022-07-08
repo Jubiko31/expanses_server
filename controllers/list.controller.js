@@ -6,6 +6,6 @@ exports.get = async (req, res) => {
     res.json(all);
   }
   catch (err) {
-    console.error(err.message);
+    res.status(422).send({answer: err});
   }
 }
