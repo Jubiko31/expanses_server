@@ -6,12 +6,8 @@ module.exports = (sequelize, Sequelize) => {
         },
         price: {
           type: Sequelize.INTEGER
-        },
-        date: {
-          type: Sequelize.DATE
         }
-      },
-      {timestamps: false}
+      }
     )
     return list;
   }
