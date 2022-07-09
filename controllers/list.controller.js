@@ -5,11 +5,11 @@ exports.add = (req, res) => {
   const { price } = req.body;
   if (!name || !price) {
     res.status(422);
-    return res.send({answer: "No input found."});
+    return res.send({answer: "Name or price input is not defined."});
   }  
   if (price < 0 || isNaN(price)) {
       res.status(422);
-      return res.send({answer: "Price should not be empty or negative!"});
+      return res.send({answer: "Price should be a positive number!"});
   }
   list.create(req.body)
   .then(data => {
