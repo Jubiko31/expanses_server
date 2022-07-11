@@ -7,7 +7,7 @@ exports.add = async (req, res) => {
     res.status(422);
     return res.send({answer: "Name or price input is not defined."});
   }  
-  if (price < 0 || isNaN(price)) {
+  if (price < 0 && isNaN(price)) {
       res.status(422);
       return res.send({answer: "Price should be a positive number!"});
   }
