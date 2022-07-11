@@ -1,6 +1,6 @@
 const { list } = require("../models");
 
-exports.add = (req, res) => {
+exports.add = async (req, res) => {
   const { name } = req.body;
   const { price } = req.body;
   if (!name || !price) {
@@ -11,12 +11,12 @@ exports.add = (req, res) => {
       res.status(422);
       return res.send({answer: "Price should be a positive number!"});
   }
-  list.create(req.body)
-  .then(data => {
-    res.send(data);
-  }).catch(err => {
-    res.status(422).send({answer: err});
-  })
+  try {
+    const newInstance = await list.create(req.body);
+    return newInstance && (await this.get(req, res));
+  } catch (error) {
+    return res.status(422).send({ answer: error })
+  }
 }
 
 exports.get = async (req, res) => {
