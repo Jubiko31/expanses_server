@@ -45,3 +45,36 @@ exports.remove = (req, res) => {
     res.status(422).send({answer: err});
   })
 }
+
+exports.updateInstance = async (req, res) => {
+  const { id } = req.params;
+  const { name, price } = req.body;
+  if (id) {
+    if (!name && !price) {
+      return  res.end("Name or price input is not defined.")
+    } else {
+      if (name) {
+        if (name.startsWith(" "))
+          return res.end("Edited name cannot be empty or invalid format.")
+      }
+      if (price) {
+        if (price < 0 || isNaN(price)) {
+          return res.end("Edited price must be positive number.")
+        }
+      }   
+    }
+
+    try {
+      const result = await list.update({ name, price }, {
+        where: {id: id }
+      });
+      if (result[0] === 1) {
+        return await this.get(req, res);
+      } else {
+      return res.status(404).send({ answer: 'Instance not found.' });
+      }
+  } catch (error) {
+      return res.status(422).send({ answer: error });
+  }
+ }
+}
