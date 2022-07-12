@@ -49,26 +49,35 @@ exports.remove = (req, res) => {
 exports.updateInstance = async (req, res) => {
   const { id } = req.params;
   const { name, price } = req.body;
+  const arrayOfErrors = [];
+  let valueKeys = {};
+
   if (id) {
     if (!name && !price) {
-      return  res.end("Name or price input is not defined.")
+        return res.status(422).send({answer:"At least one input should be defined!."})
     } else {
-      if (name) {
-        if (name.startsWith(" "))
-          return res.end("Edited name cannot be empty or invalid format.")
-      }
       if (price) {
-        if (price < 0 || isNaN(price)) {
-          return res.end("Edited price must be positive number.")
+        if(price < 0 || isNaN(price)) {
+          arrayOfErrors.push('Price must be a positive number.')
+        } else {
+          valueKeys.price = price;
         }
-      }   
+      }
+      if (name) {
+          if (!name) arrayOfErrors.push('Name cannot be empty.') 
+          else valueKeys.name = name;
+      }
+    }
+
+    if (arrayOfErrors.length) {
+      return res.status(422).send({answer: arrayOfErrors})
     }
 
     try {
-      const result = await list.update({ name, price }, {
+      const [result] = await list.update(valueKeys, {
         where: {id: id }
       });
-      if (result[0] === 1) {
+      if (result === 1) {
         return await this.get(req, res);
       } else {
       return res.status(404).send({ answer: 'Instance not found.' });
