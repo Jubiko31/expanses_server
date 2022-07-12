@@ -50,7 +50,7 @@ exports.updateInstance = async (req, res) => {
   const { id } = req.params;
   const { name, price } = req.body;
   const arrayOfErrors = [];
-  let valueKeys = {};
+  const valueKeys = {};
 
   if (id) {
     if (!name && !price) {
