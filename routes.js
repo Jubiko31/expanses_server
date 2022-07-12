@@ -8,6 +8,7 @@ module.exports = (app) => {
   .get(listController.get);
   
   router.route("/:id")
+  .patch(listController.updateInstance)
   .delete(listController.remove);
 
   app.use("/api/list", router);
